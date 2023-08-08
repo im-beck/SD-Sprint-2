@@ -5,6 +5,7 @@ MON_STAND_FEE = float(f.readline())
 DAILY_RENTAL = float(f.readline())
 WEEKLY_RENTAL = float(f.readline())
 HST_RATE = float(f.readline())
+f.close()
 
 DriverNum = DRIVER_NUM
 
