@@ -25,6 +25,9 @@ def isfloat(num) -> bool:
         return False
 
 
+def rgb(r, g, b): return f"\u001b[38;2;{r};{g};{b}m"
+
+
 # Returns the constraint, adjusts if Border is True.
 def get_constraint(*bp: False) -> int:
     xcon = Constraint
