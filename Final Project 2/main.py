@@ -33,12 +33,11 @@ while True:
     S.align("l:8.  Your report –add description here ")
     S.align("l:9.  Quit Program.")
     print(S.display())
-    S.align("r13#:Enter choice (1-9): ", fill=False)
-    Choice = V(V.number, S.display(), "int", "1-10").V
+    Choice = V(V.number, S.align("r13#:Enter choice (1-9): ", fill=False, qd=True), "int", "0-9").V
     if Choice == 9:
         print("Quitting...")
         break
-    if Choice != 10:
+    if Choice != 0:
         d = choose(Choice, Defaults)
         Defaults = d.copy()
         comp = ""
@@ -50,10 +49,10 @@ while True:
     else:
         S.blank(20)
         S.Constraint = 60
-        S.align("C:Looks like you found the super secret 10th option ;)")
+        S.align("C:Looks like you found the super secret option ZeRo ;)")
         S.line()
         print(S.display())
-        S.align("R:Enter an rgb color (999,999,999): ", fill=False)
-        Color = input(S.display())
-        Color = [int(i) for i in Color.split(",")]
+
+        Color = V(V.rgb, S.align("R:Enter an rgb color (999,999,999): ", fill=False, qd=True)).V
+        print(Color)
         print(S.rgb(*Color))

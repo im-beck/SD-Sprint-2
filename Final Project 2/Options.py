@@ -5,6 +5,7 @@
 # Imports
 import Modules.Stylizer as S
 from Modules.Validizer import Validate as V
+from datetime import datetime
 from tqdm import tqdm
 from time import sleep
 
@@ -80,6 +81,46 @@ def choose(num, d):
         # Saves employee data to file ^
         loading_bar("Saving employee data...")
         # Redundant loading bar ^ so the user knows something happened.
+    elif num == 8:
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        driver = "XXXXXXXXXXXXXXXXXXX"
+        driver_num = "####"
+        rating = "#/#"  # rating is out of 5
+        review = "xxxxxxx..."
+        # This is the driver rating table that will make it possible to track how employees are performing
+        # for an exception report there would an if statement that if the drivers ratings are >= 3 then
+        # they might need to be spoken to.
+        S.Constraint = 70
+        S.align("R:HAB TAXI SERVICES")
+        S.align(f"R:Driver Ratings as of: {current_date}")
+        S.line()
+        S.align(".1:DRIVER", ".45:DRIVER", ".65:RATING", ".9:REVIEW")
+        S.align(".1:NAME", ".45:NUMBER", ".65:(1-5)")
+        S.line()
+        for i in range(0, 8):
+            S.align(f".1:{driver}", f".45:{driver_num}", f".65:{rating}", f".9:{review}")
+        S.line()
+        print(S.display())
+
+        # This is the report for customer reviews, these would be inputted by drivers in order to keep track of
+        # customers who may be a problem and refused service later on depending on their behaviour.
+
+        cust_name = "XXXXXXXXXXXXXXXXX"
+        cust_rating = "#/#"
+        cust_review = "xxxxxx..."
+        cust_phone = "123-123-1234"
+
+        S.blank()
+        S.align("0:HAB TAXI SERVICES")
+        S.align(f"0:Customer Ratings As Of: {current_date}")  # Formatter here lol
+        S.line()
+        S.align(".1:CUSTOMER", ".45:CUSTOMER", ".65:CUSTOMER", ".9:PHONE")
+        S.align(".1:NAME", ".45:RATING", ".65:REVIEW", ".9:NUMBER")
+        S.line()
+        for i in range(0, 8):
+            S.align(f".1:{cust_name}", f".45:{cust_rating}", f".65:{cust_review}", f".9:{cust_phone}")
+        S.line()
+        print(S.display())
     else:
         print(num, "is not implemented.")
     return d
