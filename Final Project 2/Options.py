@@ -90,7 +90,7 @@ def choose(num, d):
         # This is the driver rating table that will make it possible to track how employees are performing
         # for an exception report there would an if statement that if the drivers ratings are >= 3 then
         # they might need to be spoken to.
-        S.Constraint = 70
+        S.Constraint = 65
         S.align("R:HAB TAXI SERVICES")
         S.align(f"R:Driver Ratings as of: {current_date}")
         S.line()
