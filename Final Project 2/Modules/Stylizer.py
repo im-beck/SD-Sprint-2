@@ -87,7 +87,7 @@ def line(style="-", cords="0-1") -> None:
 
 # Aligns strings within constraint, optionally positional value override can be used to place it in any
 # position.
-def align(*values: str, override=-1, fill=True) -> None:
+def align(*values: str, fill=True, qd=False, override=-1) -> None or str:
     processed = ""
     sorted_values = {}
     for i in values:
@@ -150,10 +150,13 @@ def align(*values: str, override=-1, fill=True) -> None:
         processed = processed + " "*(get_constraint()-len(processed))
     elif len(processed) > get_constraint():
         warn("Exceeds constraint.", stacklevel=2)
-    if override != -1:
+    if override != -1 and not qd:
         Memory.insert(override, processed)
     else:
-        Memory.append(processed)
+        if not qd:
+            Memory.append(processed)
+        else:
+            return processed
 
 
 # Converts memory into a multi-line string, and adds border if set to true.

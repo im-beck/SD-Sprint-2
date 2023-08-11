@@ -277,6 +277,29 @@ class Validate:
             error = True
         return error, input_val
 
+    # Validates RGB
+    @classmethod
+    def rgb(cls, input_val: str) -> bool and str:
+        error = False
+        input_val = strip(input_val, ",").split(",")
+        if len(input_val) == 3:
+            for i in input_val:
+                if Validate.number(i)[0]:
+                    error = True
+            if not error:
+                input_val = [Validate.number(i)[1] for i in input_val]
+                for i in input_val:
+                    if i > 255 or i < 0:
+                        error = True
+                if error:
+                    input_val = "Error: One or more fields are not within range 0-255."
+            else:
+                input_val = "Error: One or more fields are not numbers."
+        else:
+            input_val = "Error: Incorrect format, format should be (999,999,999)"
+            error = True
+        return error, input_val
+
     # Validates MCP, adjusts to: 999 999 999 999
     @classmethod
     def mcp(cls, input_val: str) -> bool and str:
