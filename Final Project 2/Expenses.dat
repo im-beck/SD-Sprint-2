@@ -1,0 +1,7 @@
+invoiceNum: 01,invDate: 2023-04-23,itemNum: 001,ItemInfo: Part, itemCost: $340.00, itemQuantity: 3, itemTotal: $200, subTotal: $540.00, HST: $10.00, Total: $550.00
+invoiceNum: 02,invDate: 2023-07-13,itemNum: 001,ItemInfo: Part, itemCost: $340.00, itemQuantity: 3, itemTotal: $220, subTotal: $560.00, HST: $10.00, Total: $570.00
+invoiceNum: 03,invDate: 2023-06-16,itemNum: 001,ItemInfo: Part, itemCost: $340.00, itemQuantity: 3, itemTotal: $260, subTotal: $600.00, HST: $10.00, Total: $610.00
+invoiceNum: 04,invDate: 2023-05-17,itemNum: 001,ItemInfo: Part, itemCost: $340.00, itemQuantity: 3, itemTotal: $230, subTotal: $570.00, HST: $10.00, Total: $580.00
+invoiceNum: 05,invDate: 2023-01-23,itemNum: 001,ItemInfo: Part, itemCost: $340.00, itemQuantity: 3, itemTotal: $220, subTotal: $560.00, HST: $10.00, Total: $570.00
+invoiceNum: 06,invDate: 2023-02-05,itemNum: 001,ItemInfo: Part, itemCost: $340.00, itemQuantity: 3, itemTotal: $210, subTotal: $550.00, HST: $10.00, Total: $565.00
+invoiceNum: 07,invDate: 2023-03-02,itemNum: 001,ItemInfo: Part, itemCost: $345.00, itemQuantity: 3, itemTotal: $240, subTotal: $585.00, HST: $10.00, Total: $595.00
