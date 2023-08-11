@@ -117,10 +117,31 @@ def choose(num, d):
         S.align(".1:CUSTOMER", ".45:CUSTOMER", ".65:CUSTOMER", ".9:PHONE")
         S.align(".1:NAME", ".45:RATING", ".65:REVIEW", ".9:NUMBER")
         S.line()
-        for i in range(0, 8):
-            S.align(f".1:{cust_name}", f".45:{cust_rating}", f".65:{cust_review}", f".9:{cust_phone}")
+        customers = ["End"]
+        with open("Customer.dat") as f:
+            for i in f.read().split("\n"):
+                i = i.split(", ")
+                customers.append(f"{i[0]}-{i[1]}")
+                S.align(f".1:{i[0]}", f".45:{i[1]}", f".65:{i[2][:15]}...", f".9:{i[3]}")
         S.line()
         print(S.display())
+        print()
+        input_string = S.align("R:Type a name to get full review (type 'End' to exit):", fill=False, qd=True)
+        while True:
+            S.Constraint = 90
+            search = V(V.string, input_string, customers, True).V
+            if search == "End":
+                break
+            else:
+                S.line()
+                with open("Customer.dat") as f:
+                    for i in f.read().split("\n"):
+                        i = i.split(", ")
+                        if i[0] == search.split("-")[0] and i[1] == search.split("-")[1]:
+                            S.align(f"0.5:{i[0]}-{i[1]}: {i[2]}")
+                S.line()
+                print(S.display())
+                S.blank()
     else:
         print(num, "is not implemented.")
     return d

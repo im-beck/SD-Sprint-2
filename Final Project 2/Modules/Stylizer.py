@@ -6,6 +6,15 @@
 from warnings import warn
 
 # Defining Variables:
+Rainbow = [
+    [148, 0, 211],
+    [75, 0, 130],
+    [0, 0, 255],
+    [0, 255, 0],
+    [255, 255, 0],
+    [255, 127, 0],
+    [255, 0 , 0]
+]
 Constraint = 100
 Padding = 0
 Border = False
@@ -156,11 +165,11 @@ def align(*values: str, fill=True, qd=False, override=-1) -> None or str:
         if not qd:
             Memory.append(processed)
         else:
-            return processed
+            return f"{' '*Padding}{processed}"
 
 
 # Converts memory into a multi-line string, and adds border if set to true.
-def display() -> str:
+def display(gp=False) -> str:
     if not Border:
         comp = ""
     else:
@@ -185,4 +194,14 @@ def display() -> str:
         temp = (BorderStyle["Y"][0] * get_constraint(True))[:get_constraint(True)]
         comp = comp + "\n" + " "*Padding + BorderStyle["X"][0] + temp + BorderStyle["X"][0]
     Memory.clear()
+    if gp:
+        recomp = ""
+        num = 0
+        for i in comp.split("\n"):
+            recomp = f"{recomp}\n{i}{rgb(*Rainbow[num])}"
+            if num == 6:
+                num = 0
+            else:
+                num += 1
+        comp = recomp[1:]
     return comp

@@ -5,7 +5,6 @@
 # Imports:
 import Modules.Stylizer as S
 from Modules.Validizer import Validate as V
-from Modules.Validizer import strip
 from Options import choose
 
 # Loads file to dictionary:
