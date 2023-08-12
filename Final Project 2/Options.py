@@ -81,7 +81,7 @@ def choose(num, d):
         # Saves employee data to file ^
         loading_bar("Saving employee data...")
         # Redundant loading bar ^ so the user knows something happened.
-    elif num == 6:
+    elif num == 5:
         while True:
             with open("Payments.dat", "r") as f:
                 noLine = f.readline()
