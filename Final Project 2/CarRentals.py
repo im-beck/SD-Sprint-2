@@ -2,7 +2,7 @@
 # Written on: 2023/08/012
 # Description: Collects information about Car Rentals.
 
-Allowed_Characters = "0123456789"
+
 # Import Libraries
 
 import Modules.Stylizer as S
@@ -11,6 +11,8 @@ import datetime as DT
 
 # Constants
 Curr_Date = DT.datetime.now()
+Allowed_Characters = "0123456789"
+carLST = ["1","2","3","4"]
 
 # Inputs
 while True:
@@ -37,9 +39,21 @@ while True:
                 continue
 
             startRental = V(V.date, "Enter the start date of the rental (YYYY-MM-DD): ")
+            
+            carNum = (input("Enter the Car Number (1,2,3,4): "))
+            if carNum is not carLST():
+                 print("Error: Invalid entry, must provide car number 1-4.")
+                 continue
+            elif carNum != "":
+                 print("Error: Invalid entry, must provide car number.")
+                 continue
+            elif not all (char in Allowed_Characters for char in carNum):
+                 print("Error: Invalid entry, must provide number.")
+                 continue
+                 
+
 
 
 # Calculations
 
 # Output
-
