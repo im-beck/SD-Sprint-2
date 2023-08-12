@@ -81,6 +81,58 @@ def choose(num, d):
         # Saves employee data to file ^
         loading_bar("Saving employee data...")
         # Redundant loading bar ^ so the user knows something happened.
+    elif num == 6:
+        while True:
+            with open("Payments.dat", "r") as f:
+                noLine = f.readline()
+                if noLine == "":
+                    PayID = 1
+                else:
+                    f.seek(0)
+                    lines = f.readlines()
+                    lastLine = lines[-1]
+                    PayID = int(lastLine.split(",")[0]) + 1
+            EmpIDs = []
+            with open("Employees.dat", "r") as f:
+                for data in f:
+                    dataLine = data.split(",")
+                    EmpIDs.append(dataLine[0].strip())
+            while True:
+                EmpID = input("Enter employee Number: ")
+                if EmpID not in EmpIDs:
+                    print("Employee number does not match our records. Please try again.")
+                else:
+                    break
+            PayDate = V(V.date, "Enter the payment date (YYYY-MM-DD): ", "%Y-%m-%d", "string").V
+            PayAmt = V(V.number, "Enter the payment amount: ", "$").UP
+            PayReason = input("Please input reason for payment: ")
+            PayMethod = V(V.string, "Enter the payment method: ", ["Visa", "Debit", "Cash"]).V
+
+            S.Constraint = 75
+            S.blank(30)
+            S.line()
+            S.align(f"0:Payment ID: ", f"1:{PayID}")
+            S.align(f"0:Employee Number: ", f"1:{EmpID}")
+            S.align(f"0:Payment Date: ", f"1:{PayDate}")
+            S.align(f"0:Payment Amount: ", f"1:${PayAmt}")
+            S.align(f"0:Payment Reason: ", f"1:{PayReason}")
+            S.align(f"0:Payment Method: ", f"1:{PayMethod}")
+            S.line()
+            print(S.display())
+            with open("Payments.dat", "a") as f:
+                f.write(f"{PayID}, ")
+                f.write(f"{EmpID}, ")
+                f.write(f"{PayDate}, ")
+                f.write(f"{PayAmt}, ")
+                f.write(f"{PayReason}, ")
+                f.write(f"{PayMethod}\n")
+            loading_bar("Saving Payment Record...")
+            choice = input("Would you like to enter another record? (Y/N): ").upper()
+            if choice == "Y":
+                continue
+            else:
+                break
+    
     elif num == 8:
         current_date = datetime.now().strftime("%Y-%m-%d")
         driver = "XXXXXXXXXXXXXXXXXXX"
