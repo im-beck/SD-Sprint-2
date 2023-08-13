@@ -24,68 +24,84 @@ while True:
         elif not all(char in Allowed_Characters for char in rentId):
             print("Error: Invalid entry, must provide integers only.")
             continue
-    
-        while True:
 
-            driverNum = (input("Enter the driver number (111111): "))
+        driverNum = (input("Enter the driver number (111111): "))
 
-            if driverNum == "":
-                print("Error: Driver number is Invalid. Please enter a valid driver number.")
-                continue
-            elif len(driverNum) != 6:
-                print("Error: Driver number must be 6 characters.")
-                continue
-            elif not all(char in Allowed_Characters for char in driverNum):
-                print("Error: Invalid entry, must provide integers only.")
-                continue
+        if driverNum == "":
+            print("Error: Driver number is Invalid. Please enter a valid driver number.")
+            continue
+        elif len(driverNum) != 6:
+            print("Error: Driver number must be 6 characters.")
+            continue
+        elif not all(char in Allowed_Characters for char in driverNum):
+            print("Error: Invalid entry, must provide integers only.")
+            continue
 
-            startRental = V(V.date, "Enter the start date of the rental (YYYY-MM-DD): ")
+        startRental = input("Enter the start date of the rental (YYYY-MM-DD): ")
+        startRentalFormat = DT.datetime.strptime(startRental, "%Y-%m-%d")
+        
+        
+        carNum = (input("Enter the Car Number (1,2,3,4): "))
+        if carNum not in carLST:
+                print("Error: Invalid entry, must provide car number 134-4.")
+                continue
             
-            while True:
-                carNum = (input("Enter the Car Number (1,2,3,4): "))
-                if carNum not in carLST:
-                    print("Error: Invalid entry, must provide car number 1-4.")
-                    continue
-                
-                rentTime = input("Is the Rental for a day or a week? (D/W): ").upper()
-                if rentTime == "":
-                    print("Error: Must input D for Day, W for a week.")
-                    continue
-                elif rentTime == "W":
-                    Week = 7
-                    print(Week)
-                elif rentTime == "D":
-                    dailyTime = Curr_Date.replace(hour=12, minute=0, second=0, microsecond=0)
-                    FormattedTime = dailyTime.strftime("%Y-%m-%d %H:%M")
-                    print(FormattedTime)
-                    break
+        rentTime = input("Is the Rental for a day or a week? (D/W): ").upper()
+        if rentTime == "":
+                print("Error: Must input D for Day, W for a week.")
+                continue
+        elif rentTime == "W":
+                Week = 7
+        elif rentTime == "D":
+                dailyTime = Curr_Date.replace(hour=12, minute=0, second=0, microsecond=0)
+                FormattedTime = dailyTime.strftime("%Y-%m-%d %H:%M")
+        else:
+               print("Error: Invalid entry, must provide D or W.")
 
-            while True:
-                rentCost = float(input("Enter the rental cost: "))
-                if rentCost == "":
-                    print("Error: Please enter the rental cost.")
-                    continue
-                elif not all (char in Allowed_Characters for char in rentCost):
-                    print("Error: Must only use integers.")
-                    continue
-                
-                taxCost = float(input("Enter the tax cost: "))
-                if taxCost == "":
-                    print("Error: Must enter a tax cost.")
-                    continue
-                elif not all (char in Allowed_Characters for char in taxCost):
-                    print("Error must only use integers.")
-                    continue
-                
-                totalCost = float(input("Enter the total cost: "))
-                if totalCost == "":
+        
+        rentCost = (input("Enter the rental cost: "))
+        if rentCost == "":
+                print("Error: Please enter the rental cost.")                    
+        elif all(char.isdigit() or char in ('.', '-') for char in rentCost):
+                rentCost = float(rentCost)
+        else:
+                print("Error: Please enter the rental cost")
+                continue
+
+        
+        taxCost = (input("Enter the tax cost: "))
+        if taxCost == "":
+                    print("Error: Must enter a tax cost.")                    
+        elif all(char.isdigit() or char in ('.', '-') for char in taxCost):
+                    taxCost = float(taxCost)                    
+        else:
+                print("Error: Must enter a tax cost.")  
+                continue
+        
+        
+        totalCost = (input("Enter the total cost: "))
+        if totalCost == "":
                     print("Error: Must enter a total cost.")
-                    continue
-                elif not all (char in Allowed_Characters for char in totalCost):
-                    print("Error must only use integers.")
-                    continue
-                
-                
+        elif all(char.isdigit() or char in ('.', '-') for char in totalCost):
+                    totalCost = float(totalCost)
+        else: 
+            print("Error: Must enter a total cost.")
+            continue 
+        
+        f = open('Rentals.dat', 'a')
+        with open("Rentals.dat", "a") as f:
+            f.write(f"Rental ID: {rentId}, ")
+            f.write(f"Driver Num: {driverNum}, ")
+            f.write(f"Start Date: {startRentalFormat}, ")
+            f.write(f"Car Number: {carNum}, ")
+            f.write(f"Time Rented: {FormattedTime}, ")
+            f.write(f"Rent Cost: ${rentCost}, ")
+            f.write(f"Tax Cost: ${taxCost}, ")
+            f.write(f"Total Cost: ${totalCost}\n")
+            f.close()
+
+
+
 # Calculations
 
 # Output
