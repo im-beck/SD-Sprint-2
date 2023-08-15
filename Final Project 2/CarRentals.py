@@ -16,6 +16,8 @@ Allowed_Characters = "0123456789"
 carLST = ['1','2','3','4']
 
 
+
+       
 # Inputs
 while True:
 
@@ -59,61 +61,57 @@ while True:
                 FormattedTime = dailyTime.strftime("%Y-%m-%d %H:%M")
         else:
                print("Error: Invalid entry, must provide D or W.")
-
-        
-        rentCost = (input("Enter the rental cost: "))
-        if rentCost == "":
-                print("Error: Please enter the rental cost.")                    
-        elif all(char.isdigit() or char in ('.', '-') for char in rentCost):
-                rentCost = float(rentCost)
-        else:
-                print("Error: Please enter the rental cost")
-                continue
-
-        
-        taxCost = (input("Enter the tax cost: "))
-        if taxCost == "":
-                    print("Error: Must enter a tax cost.")                    
-        elif all(char.isdigit() or char in ('.', '-') for char in taxCost):
-                    taxCost = float(taxCost)                    
-        else:
-                print("Error: Must enter a tax cost.")  
-                continue
-        
-        
-        totalCost = (input("Enter the total cost: "))
-        if totalCost == "":
-                    print("Error: Must enter a total cost.")
-        elif all(char.isdigit() or char in ('.', '-') for char in totalCost):
-                    totalCost = float(totalCost)
-        else: 
-            print("Error: Must enter a total cost.")
-            continue 
-        f.close()
-
+         
 
 
 
 # Calculations
 
-       
+        Defaults = {}
+        with open('Defaults.dat', 'r') as f:
+               for i in f.read().split(", "):
+                v = i.split(":")
+                Defaults[v[0]] = V.number(v[1])[1]
+             
+                Daily = Defaults["DailyRentalFee"]
+                Weekly = Defaults["WeeklyRentalFee"]
+                taxes = Defaults["HST"]
 
-        with open('Employees.dat', 'r') as f:
-                lines = f.readlines()
+                if rentTime == "W":
+                      subTotal = (Weekly * taxes)
+                      totalCost = subTotal + Weekly
+                elif rentTime == "D":
+                      subTotal = (Daily * taxes)
+                      totalCost = subTotal + Daily  
 
-        updLines = []
 
-        for information in lines:
-                infLine = information.strip().split(',')
-                if infLine[0] == EmpID:
-                        totalCost = str(totalCost)
-                        oldBalance = (infLine[9].strip())
-                        AdjBalance = oldBalance + totalCost
-                        infLine[9] = str(AdjBalance)
-
-                updLines.append(','.join(infLine))
-
-        with open('Employees.dat', 'a') as f:
-                for line in updLines:
-                        f.writ(line + '\n')
-# Output
+        Data = {}
+        with open('Employees.dat') as f:
+            for i in f.read().split("\n"):
+                line = i.split(", ")
+                for x, v in enumerate(line):
+                    error, val = V.number(v)
+                    if not error:
+                        line[x] = val
+                Data[line[0]] = line[1:]
+        for i in Data:
+                Data[i][len(Data[i])-1] += totalCost
+        comp = ""
+        for i in Data:
+            if comp == "":
+                comp = i
+            else:
+                comp = f"{comp}{i}"
+            for x in Data[i]:
+                comp = f"{comp}, {x}"
+            comp = f"{comp}\n"
+   # Add files for future reference.
+        with open('Rentals.dat', 'a') as r:
+                f.write(f"{rentId}, ")
+                f.write(f"{EmpID}, ")
+                f.write(f"{startRentalFormat}, ")
+                f.write(f"{carNum}, ")
+                f.write(f"{rentTime}, ")
+                f.write(f"{taxes},")
+                f.write(f"{subTotal}, ")
+                f.write(f"{totalCost}\n")
