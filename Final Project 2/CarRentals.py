@@ -15,8 +15,22 @@ Curr_Date = DT.datetime.now()
 Allowed_Characters = "0123456789"
 carLST = ['1','2','3','4']
 
+
 # Inputs
 while True:
+
+        EmpIDs = []
+        with open('Employees.dat', 'r') as f:
+                for data in f:
+                    dataLine = data.split(",")
+                    EmpIDs.append(dataLine[0].strip())
+        while True:
+                EmpID = input("Enter Driver Number: ")
+                if EmpID not in EmpIDs:
+                    print("Driver number does not match our records. Please try again.")
+                else:
+                    break
+                
         rentId = input("What is the rental ID?: ")
         if rentId == "":
             print("Error: ID is Invalid.")
@@ -24,19 +38,7 @@ while True:
         elif not all(char in Allowed_Characters for char in rentId):
             print("Error: Invalid entry, must provide integers only.")
             continue
-
-        driverNum = (input("Enter the driver number (111111): "))
-
-        if driverNum == "":
-            print("Error: Driver number is Invalid. Please enter a valid driver number.")
-            continue
-        elif len(driverNum) != 6:
-            print("Error: Driver number must be 6 characters.")
-            continue
-        elif not all(char in Allowed_Characters for char in driverNum):
-            print("Error: Invalid entry, must provide integers only.")
-            continue
-
+                
         startRental = input("Enter the start date of the rental (YYYY-MM-DD): ")
         startRentalFormat = DT.datetime.strptime(startRental, "%Y-%m-%d")
         
@@ -87,21 +89,31 @@ while True:
         else: 
             print("Error: Must enter a total cost.")
             continue 
-        
-        f = open('Rentals.dat', 'a')
-        with open("Rentals.dat", "a") as f:
-            f.write(f"Rental ID: {rentId}, ")
-            f.write(f"Driver Num: {driverNum}, ")
-            f.write(f"Start Date: {startRentalFormat}, ")
-            f.write(f"Car Number: {carNum}, ")
-            f.write(f"Time Rented: {FormattedTime}, ")
-            f.write(f"Rent Cost: ${rentCost}, ")
-            f.write(f"Tax Cost: ${taxCost}, ")
-            f.write(f"Total Cost: ${totalCost}\n")
-            f.close()
+        f.close()
+
 
 
 
 # Calculations
 
+       
+
+        with open('Employees.dat', 'r') as f:
+                lines = f.readlines()
+
+        updLines = []
+
+        for information in lines:
+                infLine = information.strip().split(',')
+                if infLine[0] == EmpID:
+                        totalCost = str(totalCost)
+                        oldBalance = (infLine[9].strip())
+                        AdjBalance = oldBalance + totalCost
+                        infLine[9] = str(AdjBalance)
+
+                updLines.append(','.join(infLine))
+
+        with open('Employees.dat', 'a') as f:
+                for line in updLines:
+                        f.writ(line + '\n')
 # Output
