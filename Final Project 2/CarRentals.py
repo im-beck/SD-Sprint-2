@@ -26,12 +26,10 @@ while True:
                 for data in f:
                     dataLine = data.split(",")
                     EmpIDs.append(dataLine[0].strip())
-        while True:
+
                 EmpID = input("Enter Driver Number: ")
                 if EmpID not in EmpIDs:
                     print("Driver number does not match our records. Please try again.")
-                else:
-                    break
                 
         rentId = input("What is the rental ID?: ")
         if rentId == "":
@@ -68,21 +66,20 @@ while True:
 # Calculations
 
         Defaults = {}
-        with open('Defaults.dat', 'r') as f:
-               for i in f.read().split(", "):
-                v = i.split(":")
-                Defaults[v[0]] = V.number(v[1])[1]
+        with open("Defaults.dat") as f:
+                for i in f.read().split(", "):
+                        v = i.split(":")
+                        Defaults[v[0]] = V.number(v[1])[1]
              
                 Daily = Defaults["DailyRentalFee"]
                 Weekly = Defaults["WeeklyRentalFee"]
                 taxes = Defaults["HST"]
-
                 if rentTime == "W":
                       subTotal = (Weekly * taxes)
                       totalCost = subTotal + Weekly
                 elif rentTime == "D":
                       subTotal = (Daily * taxes)
-                      totalCost = subTotal + Daily  
+                      totalCost = subTotal + Daily 
 
 
         Data = {}
@@ -93,25 +90,39 @@ while True:
                     error, val = V.number(v)
                     if not error:
                         line[x] = val
-                Data[line[0]] = line[1:]
+        
+                        Data[line[0]] = line[1:]
         for i in Data:
-                Data[i][len(Data[i])-1] += totalCost
+                Data[i][len(Data[i])-1] + totalCost
         comp = ""
         for i in Data:
-            if comp == "":
-                comp = i
-            else:
+                if comp == "":
+                        comp = i
+        else:
                 comp = f"{comp}{i}"
-            for x in Data[i]:
-                comp = f"{comp}, {x}"
-            comp = f"{comp}\n"
+        for x in Data[i]:
+                        comp = f"{comp}, {x}"
+                        comp = f"{comp}\n"
+
+
+            
    # Add files for future reference.
-        with open('Rentals.dat', 'a') as r:
-                f.write(f"{rentId}, ")
-                f.write(f"{EmpID}, ")
-                f.write(f"{startRentalFormat}, ")
-                f.write(f"{carNum}, ")
-                f.write(f"{rentTime}, ")
-                f.write(f"{taxes},")
-                f.write(f"{subTotal}, ")
-                f.write(f"{totalCost}\n")
+        with open('Rentals.dat', 'a') as f:
+                f.write(f"Rental ID:{rentId}, ")
+                f.write(f"Employee ID: {EmpID}, ")
+                f.write(f"Rental Start: {startRentalFormat}, ")
+                f.write(f"Car Number:{carNum}, ")
+                f.write(f"Rent Duration:{rentTime}, ")
+                f.write(f"Rental Cost:{f'${totalCost}'}, ")
+                f.write(f"Taxes:{f'${taxes}'}, ")
+                f.write(f"Total:{f'${totalCost}'}\n")
+
+        Continue = input("Would you like to enter more rentals? (Y/N):").upper()
+
+        if Continue == "Y":
+                continue
+        else:
+               break
+
+
+        
