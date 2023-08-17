@@ -20,50 +20,34 @@ carLST = ['1','2','3','4']
        
 # Inputs
 while True:
-
         EmpIDs = []
-        with open('Employees.dat', 'r') as f:
-                for data in f:
-                    dataLine = data.split(",")
-                    EmpIDs.append(dataLine[0].strip())
-
-                EmpID = input("Enter Driver Number: ")
-                if EmpID not in EmpIDs:
-                    print("Driver number does not match our records. Please try again.")
-                
-        rentId = input("What is the rental ID?: ")
-        if rentId == "":
-            print("Error: ID is Invalid.")
-            continue
-        elif not all(char in Allowed_Characters for char in rentId):
-            print("Error: Invalid entry, must provide integers only.")
-            continue
-                
-        startRental = input("Enter the start date of the rental (YYYY-MM-DD): ")
-        startRentalFormat = DT.datetime.strptime(startRental, "%Y-%m-%d")
-        
-        
-        carNum = (input("Enter the Car Number (1,2,3,4): "))
-        if carNum not in carLST:
-                print("Error: Invalid entry, must provide car number 134-4.")
-                continue
-            
-        rentTime = input("Is the Rental for a day or a week? (D/W): ").upper()
-        if rentTime == "":
-                print("Error: Must input D for Day, W for a week.")
-                continue
-        elif rentTime == "W":
+        Data = {}
+        with open('Employees.dat') as f:
+                for i in f:
+                    line = i.split(", ")
+                    EmpIDs.append(line[0])
+                    for x, v in enumerate(line):
+                        error, val = V.number(v)
+                        if not error:
+                            line[x] = val
+                    Data[str(line[0])] = line[1:]
+        EmpID = V(V.string, "Enter Driver Number: ", EmpIDs).V
+        rentId = V(V.number, "What is the rental ID?: ").UP
+        startRental = V(V.date, "Enter the start date of the rental (YYYY-MM-DD): ", "%Y-%m-%d", "string").V
+        carNum = V(V.number, "Enter the Car Number (1-4): ", "int", "1-4").V
+        rentTime = V(V.string, "Is the Rental for a day or a week? (D/W): ", "D,W").V
+        if rentTime == "W":
                 Week = 7
         elif rentTime == "D":
                 dailyTime = Curr_Date.replace(hour=12, minute=0, second=0, microsecond=0)
                 FormattedTime = dailyTime.strftime("%Y-%m-%d %H:%M")
         else:
-               print("Error: Invalid entry, must provide D or W.")
-         
+                print("Error: Invalid entry, must provide D or W.")
+        
+        
+        
 
-
-
-# Calculations
+            # Calculations
 
         Defaults = {}
         with open("Defaults.dat") as f:
@@ -74,43 +58,37 @@ while True:
                 Daily = Defaults["DailyRentalFee"]
                 Weekly = Defaults["WeeklyRentalFee"]
                 taxes = Defaults["HST"]
+
                 if rentTime == "W":
                       subTotal = (Weekly * taxes)
                       totalCost = subTotal + Weekly
                 elif rentTime == "D":
                       subTotal = (Daily * taxes)
-                      totalCost = subTotal + Daily 
+                      totalCost = subTotal + Daily
 
-
-        Data = {}
-        with open('Employees.dat') as f:
-            for i in f.read().split("\n"):
-                line = i.split(", ")
-                for x, v in enumerate(line):
-                    error, val = V.number(v)
-                    if not error:
-                        line[x] = val
-        
-                        Data[line[0]] = line[1:]
-        for i in Data:
-                Data[i][len(Data[i])-1] + totalCost
+        Data[EmpID][8] += totalCost
+        FormattedTime = ""
         comp = ""
         for i in Data:
                 if comp == "":
-                        comp = i
-        else:
-                comp = f"{comp}{i}"
-        for x in Data[i]:
-                        comp = f"{comp}, {x}"
-                        comp = f"{comp}\n"
+                    comp = i
+                else:
+                    comp = f"{comp}{i}"
+                for x in Data[i]:
+                    comp = f"{comp}, {x}"
+                comp = f"{comp}\n"
+                
+        with open("Employees.dat", "w") as f:
+                f.write(comp)
 
 
-            
-   # Add files for future reference.
+
+        # Add files for future reference.
+                
         with open('Rentals.dat', 'a') as f:
                 f.write(f"Rental ID:{rentId}, ")
                 f.write(f"Employee ID: {EmpID}, ")
-                f.write(f"Rental Start: {startRentalFormat}, ")
+                f.write(f"Rental Start: {FormattedTime}, ")
                 f.write(f"Car Number:{carNum}, ")
                 f.write(f"Rent Duration:{rentTime}, ")
                 f.write(f"Rental Cost:{f'${totalCost}'}, ")
@@ -122,7 +100,7 @@ while True:
         if Continue == "Y":
                 continue
         else:
-               break
+                break
 
 
         
