@@ -132,7 +132,53 @@ def choose(num, d):
                 continue
             else:
                 break
-    
+    elif num == 6:
+        while true:
+            startDate = V(V.date, "Please enter the start date (YYYY-MM-DD): ").V
+            endDate = V(V.date, "Please enter the end date (YYYY-MM-DD): ").V
+            revTotal = 0
+            expTotal = 0
+            S.Constraint = 65
+            S.align("R:HABS Taxi Services")
+            S.align(f"R:Profit listing between {startDate} and {endDate}")
+            S.line("=")
+            S.align("R:Revenues: ")
+            S.blank()
+            S.align(".1:TRANSACTION", ".45:DRIVER", ".65:TRANSACTION", ".9:TOTAL")
+            S.align(".1:NUMBER", ".45:NUMBER", ".65:DATE", ".9:REVENUE")
+            with open("Revenue.dat", "r") as f:
+                for lines in f:
+                    data = lines.split(",")
+                    revDate = datetime.strptime(data[1].strip(), "%Y-%m-%d")
+                    if startDate <= revDate <= endDate:
+                        revTotal += float(data[6].strip())
+                        S.align(f".1:{data[0].strip()}", f".45:{data[2].strip()}", f".65:{data[1].strip()}", f".9:${data[6].strip()}")
+            S.line("=")
+            S.align(f".1:GRAND TOTAL:", f".9:${revTotal}")
+            S.line("=")
+            S.align("R:Expenses:")
+            S.blank()
+            S.align(".1:INVOICE", ".45:DRIVER", ".65:INVOICE", ".9:TOTAL")
+            S.align(".1:NUMBER", ".45:NUMBER", ".65:DATE", ".9:EXPENSE")
+            with open("Expenses.dat", "r") as f:
+                for lines in f:
+                    data = lines.split(",")
+                    expDate = datetime.strptime(data[1].strip(), "%Y-%m-%d")
+                    if startDate <= expDate <= endDate:
+                        expTotal += float(data[7].strip())
+                        S.align(f".1:{data[0].strip()}", f".45:{data[2].strip()}", f".65:{data[1].strip()}", f".9:${data[7].strip()}")
+            S.line("=")
+            S.align(".1:GRAND TOTAL:", f".9:${expTotal}")
+            S.line("-")
+            profit = revTotal - expTotal
+            S.align(".1:PROFIT:", f".9:${profit}")
+            print(S.display())
+
+            choice = input("Would you like to print another profit listing? (Y/N): ").upper()
+            if choice == "Y":
+                continue
+            else:
+                break
     elif num == 8:
         current_date = datetime.now().strftime("%Y-%m-%d")
         driver = "XXXXXXXXXXXXXXXXXXX"
